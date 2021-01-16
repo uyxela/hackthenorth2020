@@ -21,8 +21,11 @@ function activate(context) {
         provideHover(document, position, token) {
             const range = document.getWordRangeAtPosition(position);
 			const word = document.getText(range);
-			const translated = translate(word);
-            return new vscode.Hover(translated);
+			return translate(word).then(response => response.json()).then(jsonResponse => {
+				const translated = jsonResponse.translations[0].translation.toLowerCase();
+				return new vscode.Hover(translated);
+			});
+            
         }
     });
 
