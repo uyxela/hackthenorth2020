@@ -1,0 +1,145 @@
+{
+  "name": "htn-v3",
+  "displayName": "HTN V3",
+  "description": "translates variables, functions, and syntax documentation",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:htn-v3.helloWorld",
+	"onCommand:htn-v3.FAITH",
+	"onLanguage:python"
+  ],
+  "main": "./extension.js",
+	"contributes": {
+
+		"contributes": {
+
+			"views": {
+				"explorer": [
+					{
+						"id": "node",
+						"name": "TestNodes"
+					}
+				]
+			}
+		},
+
+		"keybindings": [
+			{
+				"command": "htn-v3.FAITH",
+				"key": "ctrl+shift+t",
+				"mac": "cmd+shift+t"
+			}
+		],
+
+		"commands": [
+			{
+				"command": "htn-v3.helloWorld",
+				"title": "Hello World"
+			},
+			{
+				"command": "htn-v3.FAITH",
+				"title": "Faith Is Poo"
+			}
+		],
+
+		"configuration": {
+			"type": "object",
+			"title": "Translator",
+			"properties": {
+				"translator.autoRefresh": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "translates variables, function names, and syntax documentation"
+				},
+				"translator.dropDownMenu": {
+					"type": "string",
+					"markdownDescription": "The language you want a translation from",
+					"enum": [
+						"العربية",
+						"български език",
+						"বাংলা",
+						"Bosanski",
+						"Català",
+						"Crnogorski",
+						"Český Jazyk",
+						"Cymraeg",
+						"Dansk",
+						"Deutsch",
+						"Νέα Ελληνικά",
+						"Español",
+						"Eesti Keel",
+						"Euskara",
+						"Suomen Kieli",
+						"Français",
+						"Français Québécois",
+						"Gaeilge",
+						"ગુજરાતી",
+						"עברית",
+						"हिन्दी",
+						"Hrvatski",
+						"Magyar Nyelv",
+						"Bahasa Indonesia",
+						"Italiano",
+						"日本語",
+						"한국어",
+						"Lietuvių Kalba",
+						"Latviešu Valoda",
+						"മലയാളം",
+						"Bahasa Melayu",
+						"Malti",
+						"Bokmål",
+						"नेपाली भाषा",
+						"Nederlands",
+						"Język polski",
+						"Português",
+						"Limba Română",
+						"Русский язык",
+						"සිංහල",
+						"Slovenčina",
+						"Slovenščina",
+						"Српски",
+						"Svenska",
+						"தமிழ்",
+						"తెలుగు",
+						"ภาษาไทย",
+						"Türkçe",
+						"Українська мова",
+						"اُردُو",
+						"Tiếng Việt",
+						"中文",
+						"古文"
+					],
+					"default": ""
+				}
+			}
+
+
+
+		},
+		"scripts": {
+			"lint": "eslint .",
+			"pretest": "npm run lint",
+			"test": "node ./test/runTest.js"
+		},
+		"devDependencies": {
+			"@types/vscode": "^1.52.0",
+			"@types/glob": "^7.1.3",
+			"@types/mocha": "^8.0.4",
+			"@types/node": "^12.11.7",
+			"eslint": "^7.15.0",
+			"glob": "^7.1.6",
+			"mocha": "^8.1.3",
+			"typescript": "^4.1.2",
+			"vscode-test": "^1.4.1"
+		},
+		"dependencies": {
+			"node-fetch": "^2.6.1"
+		}
+	}
+}

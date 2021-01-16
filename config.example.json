@@ -1,0 +1,4 @@
+{
+    "url": "url of IBM Watson Translator instance",
+    "authorization": "Base64 encoded basic auth with username as 'apikey' and password as key value"
+}
