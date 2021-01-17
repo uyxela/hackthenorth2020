@@ -132,6 +132,7 @@
 		"vscode-test": "^1.4.1"
 	},
 	"dependencies": {
+		"fast-csv": "^4.3.6",
 		"node-fetch": "^2.6.1"
 	},
 	"repository": "https://github.com/faith335/hackthenorth2020",

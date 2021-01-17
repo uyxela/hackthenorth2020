@@ -3,6 +3,9 @@ const { languages } = require("./lang.json");
 const { url, authorization } = require("./config.json");
 const fetch = require("node-fetch");
 const { workspace } = require("vscode");
+const fs = require("fs");
+const csv = require("fast-csv");
+const path = require("path");
 
 function translate(word) {
   const languageFrom = languageConfiguration();
@@ -62,14 +65,53 @@ function translateReplace() {
     //captures text to be translated
     vscode.window.showInformationMessage(text);
 
-    const translatedWord = translate(text)
-      .then((response) => response.json())
-      .then((jsonResponse) => {
-        const translation = jsonResponse.translations[0].translation.toLowerCase();
-        editor.edit((edit) => {
-          edit.replace(editor.selection, translation);
+    let translateWithAPI = true;
+
+    let translationData = [];
+
+    try {
+      fs.createReadStream(path.resolve(__dirname, "translations.csv"))
+        .pipe(csv.parse({ headers: true }))
+        .on("error", (error) => console.error(error))
+        .on("data", (row) => translationData.push(row))
+        .on("end", (rowCount) => {
+          if (rowCount > 0) {
+            translationData.forEach((translationThing) => {
+              if (translateWithAPI && translationThing.Word === text) {
+                console.log("using csv");
+                editor.edit((edit) => {
+                  edit.replace(editor.selection, translationThing.Translation);
+                });
+                translateWithAPI = false;
+              }
+            });
+          }
+          if (translateWithAPI) {
+            translate(text)
+              .then((response) => response.json())
+              .then((jsonResponse) => {
+                const translation = jsonResponse.translations[0].translation.toLowerCase();
+                console.log("using API");
+                editor.edit((edit) => {
+                  edit.replace(editor.selection, translation);
+                });
+                translationData.push({
+                  Word: text,
+                  Translation: translation
+                })
+                const csvStream = csv.format({headers: true})
+                const file = fs.createWriteStream(path.resolve(__dirname, "translations.csv"))
+                csvStream.pipe(file).on('end', () => process.exit());
+                translationData.forEach(translationPiece => {
+                    csvStream.write({Word: translationPiece.Word, Translation: translationPiece.Translation});
+                })
+                csvStream.end()
+              });
+          }
         });
-      });
+    } catch (err) {
+      console.error(err);
+    }
 
     //console.log(translatedWord);
 
