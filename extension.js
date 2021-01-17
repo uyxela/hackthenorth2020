@@ -44,9 +44,9 @@ function activate(context) {
 
 	let disposable2 = vscode.commands.registerCommand('htn-v3.upload', uploadToDropbase);
 
-	let disposable4 = vscode.commands.registerCommand('htn-v3.retrieve', retrieveFromDropbase);
-
 	let disposable3 = vscode.commands.registerCommand('htn-v3.FAITH', translateReplace);
+	
+	let disposable4 = vscode.commands.registerCommand('htn-v3.retrieve', retrieveFromDropbase);
 
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(disposable2);
@@ -54,6 +54,10 @@ function activate(context) {
 	context.subscriptions.push(disposable4);
 }
 exports.activate = activate;
+
+// function updateStatusBarItem() {
+// 	myStatusBarItem.show();
+// }
 
 // this method is called when your extension is deactivated
 function deactivate() {}

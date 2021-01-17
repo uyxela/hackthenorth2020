@@ -29,38 +29,9 @@ function translate(word) {
       model_id: `${languageFrom}-en`,
     }),
   });
-  // .then((jsonResponse) => {
-  //   console.log("?", jsonResponse);
-
-  //   if (jsonResponse.translations != undefined) {
-  //     console.log("here", jsonResponse.translations[0].translation);
-  //     return jsonResponse.translations[0].translation;
-  //   }
-
-  //   // if (jsonResponse.translation) {
-  //   //     console.log(jsonResponse.translation, "thing");
-  //   //     //console.log(jsonResponse.translation.length, "length");
-  //   // }
-
-  //   // if (jsonResponse.translation && jsonResponse.translations.length > 0) {
-  //   //     return jsonResponse.translations[0].translation;
-  //   // }
-
-  //   // translation = jsonResponse.translations[0].translation.toLowerCase();
-
-  //   // translation = jsonResponse.translations[0].translation.toLowerCase();
-
-  //   // translation = jsonResponse.translations[0].translation.toLowerCase();
-  // })
-  //.catch(err => console.log(err));
-
-  // console.log(translation, "translated");
-
-  // return translation;
 }
 
 function translateReplace() {
-  //console.log("hi");
 
   const editor = vscode.window.activeTextEditor;
 
