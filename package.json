@@ -11,6 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:htn-v3.helloWorld",
+		"onCommand:htn-v3.upload",
 		"onCommand:htn-v3.FAITH",
 		"onLanguage:python"
 	],
@@ -37,6 +38,10 @@
 			{
 				"command": "htn-v3.helloWorld",
 				"title": "Hello World"
+			},
+			{
+				"command": "htn-v3.upload",
+				"title": "Upload to Dropbase"
 			},
 			{
 				"command": "htn-v3.FAITH",
@@ -133,7 +138,8 @@
 	},
 	"dependencies": {
 		"fast-csv": "^4.3.6",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.6.1",
+		"pg": "^8.5.1"
 	},
 	"repository": "https://github.com/faith335/hackthenorth2020",
 	"license": "MIT"

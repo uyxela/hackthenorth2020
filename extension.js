@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const {translate, translateReplace } = require('./functions');
+const {translate, translateReplace, uploadToDropbase, retrieveFromDropbase } = require('./functions');
 // import {transRightClick} from './functions'
 
 // this method is called when your extension is activated
@@ -42,10 +42,16 @@ function activate(context) {
 		vscode.window.showInformationMessage('Hello World from HTN V3!');
 	});
 
+	let disposable2 = vscode.commands.registerCommand('htn-v3.upload', uploadToDropbase);
+
+	let disposable4 = vscode.commands.registerCommand('htn-v3.retrieve', retrieveFromDropbase);
+
 	let disposable3 = vscode.commands.registerCommand('htn-v3.FAITH', translateReplace);
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposable2);
 	context.subscriptions.push(disposable3);
+	context.subscriptions.push(disposable4);
 }
 exports.activate = activate;
 

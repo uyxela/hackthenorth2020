@@ -1,11 +1,19 @@
 const vscode = require("vscode");
 const { languages } = require("./lang.json");
-const { url, authorization } = require("./config.json");
+const { url, authorization, dropbase, database } = require("./config.json");
 const fetch = require("node-fetch");
 const { workspace } = require("vscode");
 const fs = require("fs");
 const csv = require("fast-csv");
 const path = require("path");
+// const { Client } = require("pg");
+// const client = new Client({
+//      "user": "ujj87ag94t8g",
+//      "host": "ec2-3-90-70-174.compute-1.amazonaws.com ",
+//      "database": "d5essjes5bmssuplkb6v3v8",
+//      "password": "pc6v3t9htdc5yjp1db9fani74c3oayvs3",
+//      "port": 5432
+// });
 
 function translate(word) {
   const languageFrom = languageConfiguration();
@@ -77,10 +85,10 @@ function translateReplace() {
         .on("end", (rowCount) => {
           if (rowCount > 0) {
             translationData.forEach((translationThing) => {
-              if (translateWithAPI && translationThing.Word === text) {
+              if (translateWithAPI && translationThing.word === text) {
                 console.log("using csv");
                 editor.edit((edit) => {
-                  edit.replace(editor.selection, translationThing.Translation);
+                  edit.replace(editor.selection, translationThing.translation);
                 });
                 translateWithAPI = false;
               }
@@ -96,14 +104,14 @@ function translateReplace() {
                   edit.replace(editor.selection, translation);
                 });
                 translationData.push({
-                  Word: text,
-                  Translation: translation
+                  word: text,
+                  translation: translation
                 })
                 const csvStream = csv.format({headers: true})
                 const file = fs.createWriteStream(path.resolve(__dirname, "translations.csv"))
                 csvStream.pipe(file).on('end', () => process.exit());
                 translationData.forEach(translationPiece => {
-                    csvStream.write({Word: translationPiece.Word, Translation: translationPiece.Translation});
+                    csvStream.write({word: translationPiece.word, translation: translationPiece.translation});
                 })
                 csvStream.end()
               });
@@ -158,6 +166,41 @@ function languageConfiguration() {
   });
 
   return language[0].language;
+}
+
+function retrieveFromDropbase() {
+
+}
+
+function uploadToDropbase() {
+    fetch(`https://api2.dropbase.io/v1/pipeline/generate_presigned_url?token=${dropbase}`, {
+        method: 'POST'
+    }).then(response => response.json()).then(jsonResponse => {
+        console.log(jsonResponse);
+        fetch(jsonResponse.upload_url, {
+            method: 'PUT',
+            body: fs.readFileSync(path.resolve(__dirname, "translations.csv"))
+        }).then(response => response.text()).then(textResponse => {
+            if (textResponse === "") {
+                console.log("ok!");
+                // client.connect(err => {
+                //     if (err) {
+                //         console.error('connection error', err.stack)
+                //     } else {
+                //         console.log("connected")
+                //         client.query('select * from translations', (err, res) => {
+                //             console.log(err, res);
+                //             client.end()
+                //         })
+                //     }
+                // });
+                // client.query('select * from "translations"', (err, res) => {
+                //     console.log(err, res);
+                //     client.end();
+                // })
+            }
+        })
+    })
 }
 
 // function hover (word){
@@ -223,4 +266,6 @@ function languageConfiguration() {
 module.exports = {
   translate,
   translateReplace,
+  uploadToDropbase,
+  retrieveFromDropbase
 };
